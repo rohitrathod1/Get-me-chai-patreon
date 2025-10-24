@@ -5,6 +5,7 @@ import { fetchuser, fetchpayments, initiate } from "@/actions/useractions";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image";
 
 const PaymentPage = ({ username }) => {
   const [paymentForm, setPaymentForm] = useState({ name: "", message: "", amount: "" });
@@ -95,13 +96,13 @@ const PaymentPage = ({ username }) => {
 
       {/* Cover & Profile */}
       <div className="cover w-full bg-red-50 relative">
-        <img
+        <Image
           className="object-cover w-full h-48 md:h-[350px] shadow-blue-700 shadow-sm"
           src={currentUser.coverpic || dummyCover}
           alt="Cover"
         />
         <div className="absolute -bottom-20 right-[46%] border-2 border-white overflow-hidden rounded-full w-32 h-32">
-          <img
+          <Image
             className="rounded-full object-cover w-full h-full"
             src={currentUser.profilepic || dummyProfile}
             alt="Profile"
@@ -126,7 +127,7 @@ const PaymentPage = ({ username }) => {
               {payments.length === 0 && <li>No payments yet</li>}
               {payments.map((p, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <img width={33} src="avatar.gif" alt="user avatar" />
+                  <Image width={33} src="avatar.gif" alt="user avatar" />
                   <span>
                     {p.name} donated <strong>₹{p.amount}</strong> with a message "{p.message}"
                   </span>

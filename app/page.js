@@ -8,7 +8,7 @@ export default function Home() {
         <div className="font-bold flex gap-6 md:gap-20 md:text-5xl justify-center items-center text-3xl">
           Get Me a Chai{" "}
           <span>
-            <img className="invertImg" src="/tea.gif" width={88} alt="tea" />
+            <Image className="invertImg" src="/tea.gif" width={88} alt="tea" />
           </span>
         </div>
         <p className="text-center md:text-left">
