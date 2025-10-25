@@ -1,12 +1,17 @@
+// app/api/auth/[...nextauth]/route.js
 import NextAuth from "next-auth";
-import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import FacebookProvider from "next-auth/providers/facebook";
 import connectDb from "@/db/connectDb";
 import User from "@/models/User";
 
 export const authOptions = {
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
@@ -15,50 +20,53 @@ export const authOptions = {
       clientId: process.env.FACEBOOK_ID,
       clientSecret: process.env.FACEBOOK_SECRET,
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
-    }),
   ],
+
   callbacks: {
     async signIn({ user }) {
       try {
         await connectDb();
-        if (!user.email) {
-          return false; // Stop sign-in if email is not available
-        }
+        if (!user.email) return false; // Stop sign-in if email missing
 
-        const currentUser = await User.findOne({ email: user.email });
-        if (!currentUser) {
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          // Create new user with lowercase username
           await User.create({
             email: user.email,
-            username: user.name || user.email.split("@")[0],
+            username: user.name
+              ? user.name.replace(/\s+/g, "").toLowerCase()
+              : user.email.split("@")[0],
           });
         }
         return true;
-      } catch (error) {
-        console.error("Sign-in error:", error);
+      } catch (err) {
+        console.error("Sign-in error:", err);
         return false;
       }
     },
+
     async session({ session }) {
       try {
         await connectDb();
         const dbUser = await User.findOne({ email: session.user.email });
         if (dbUser) {
-          session.user.name = dbUser.username;
+          session.user.name = dbUser.username; // Use username from DB
         }
         return session;
-      } catch (error) {
-        console.error("Session error:", error);
+      } catch (err) {
+        console.error("Session error:", err);
         return session;
       }
     },
   },
+
   pages: {
-    signIn: "/login",
-    error: "/auth/error",
+    signIn: "/login", // Custom login page
+    error: "/auth/error", // Custom error page
   },
+
+  secret: process.env.NEXTAUTH_SECRET, // Required for Vercel live
+  session: { strategy: "jwt" },
 };
 
 const handler = NextAuth(authOptions);
