@@ -13,10 +13,10 @@ const PaymentPage = ({ username }) => {
   const [payments, setPayments] = useState([]);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dummyProfile = "/images/dummy profile.jpg"; // Default profile
+  const dummyCover = "/images/cover.jpeg";          // Default cover
+  const blurImage = "/images/blur-placeholder.jpeg"; // Blur placeholder
 
-  const dummyProfile = "/dummy profile.jpg"; // Default profile
-  const dummyCover = "/cover.jpeg";          // Default cover
-  const blurImage = "/blur-placeholder.jpeg"; // Blur placeholder
 
   useEffect(() => {
     const loadData = async () => {
@@ -73,41 +73,38 @@ const PaymentPage = ({ username }) => {
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
       {/* Cover & Profile */}
-      <div className="cover w-full bg-red-50 relative h-48 md:h-[350px]">
+      <div className="relative w-full h-48 md:h-[350px] bg-gray-200">
         <Image
           src={currentUser.coverpic || dummyCover}
           alt="Cover Image"
           fill
-          priority
+          style={{ objectFit: "cover" }}
           placeholder="blur"
           blurDataURL={blurImage}
-          className="object-cover"
-          sizes="100vw"
         />
-        <div className="absolute-bottom-20 right-[46%] border-2 border-white overflow-hidden rounded-full w-32 h-32 ">
+        <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 w-32 h-32 border-4 border-white rounded-full overflow-hidden">
           <Image
             src={currentUser.profilepic || dummyProfile}
             alt="Profile Image"
             width={128}
             height={128}
-            priority
+            style={{ objectFit: "cover" }}
             placeholder="blur"
             blurDataURL={blurImage}
-            className="rounded-full object-cover"
           />
         </div>
       </div>
 
       {/* User Info */}
-      <div className="info flex flex-col items-center my-24 mb-32 gap-2">
+      <div className="flex flex-col mb-5 items-center mt-20 gap-2">
         <div className="font-bold text-lg">@{username}</div>
         <div className="text-slate-400">Let&apos;s help {username} get a chai!</div>
         <div className="text-slate-400">{payments.length} Payments · ₹{totalRaised} raised</div>
 
         {/* Payment Section */}
-        <div className="payment flex flex-col md:flex-row gap-3 w-[80%] mt-11">
+        <div className="flex flex-col md:flex-row gap-3 w-[80%] mt-11">
           {/* Top Supporters */}
-          <div className="supporters w-full md:w-1/2 bg-slate-900 rounded-lg text-white p-10">
+          <div className="w-full md:w-1/2 bg-slate-900 rounded-lg text-white p-10">
             <h2 className="text-2xl font-bold mb-5">Top 10 Supporters</h2>
             <ul className="text-lg space-y-4">
               {payments.length === 0 && <li>No payments yet</li>}
@@ -123,7 +120,7 @@ const PaymentPage = ({ username }) => {
           </div>
 
           {/* Make Payment */}
-          <div className="makePayment w-full md:w-1/2 bg-slate-900 rounded-lg text-white p-10 flex flex-col gap-3">
+          <div className="w-full md:w-1/2 bg-slate-900 rounded-lg text-white p-10 flex flex-col gap-3">
             <h2 className="text-2xl font-bold mb-5">Make a Payment</h2>
             <input type="text" name="name" placeholder="Enter Name" value={paymentForm.name} onChange={handleChange} className="w-full p-3 rounded-lg bg-slate-800" />
             <input type="text" name="message" placeholder="Enter Message" value={paymentForm.message} onChange={handleChange} className="w-full p-3 rounded-lg bg-slate-800" />
