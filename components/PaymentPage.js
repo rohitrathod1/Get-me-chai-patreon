@@ -14,8 +14,9 @@ const PaymentPage = ({ username }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const dummyProfile = "/dummy profile.jpg"; // add this image in your public folder
-  const dummyCover = "/cover.jpeg";     // add this image in your public folder
+  const dummyProfile = "/dummy profile.jpg"; // Default profile
+  const dummyCover = "/cover.jpeg";          // Default cover
+  const blurImage = "/blur-placeholder.jpeg"; // Blur placeholder
 
   useEffect(() => {
     const loadData = async () => {
@@ -26,21 +27,12 @@ const PaymentPage = ({ username }) => {
       const dbPayments = await fetchpayments(username);
       setPayments(dbPayments || []);
     };
-
     loadData();
   }, [username, router]);
 
   useEffect(() => {
     if (searchParams.get("paymentdone") === "true") {
-      toast.success("Thanks for your donation!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        transition: Bounce,
-      });
+      toast.success("Thanks for your donation!", { theme: "light", transition: Bounce });
       router.replace(`/${username}`);
     }
   }, [searchParams, router, username]);
@@ -65,12 +57,7 @@ const PaymentPage = ({ username }) => {
       image: currentUser.profilepic || dummyProfile,
       order_id: order.id,
       callback_url: `${process.env.NEXT_PUBLIC_URL}/api/razorpay`,
-      prefill: {
-        name: paymentForm.name || "Anonymous",
-        email: "",
-        contact: "",
-      },
-      notes: { address: "Get Me A Chai" },
+      prefill: { name: paymentForm.name || "Anonymous" },
       theme: { color: "#3399cc" },
     };
 
@@ -82,41 +69,41 @@ const PaymentPage = ({ username }) => {
 
   return (
     <>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-
+      <ToastContainer />
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />
 
       {/* Cover & Profile */}
-      <div className="cover w-full bg-red-50 relative">
+      <div className="cover w-full bg-red-50 relative h-48 md:h-[350px]">
         <Image
-          className="object-cover w-full h-48 md:h-[350px] shadow-blue-700 shadow-sm"
           src={currentUser.coverpic || dummyCover}
-          alt="Cover"
+          alt="Cover Image"
+          fill
+          priority
+          placeholder="blur"
+          blurDataURL={blurImage}
+          className="object-cover"
+          sizes="100vw"
         />
         <div className="absolute -bottom-20 right-[46%] border-2 border-white overflow-hidden rounded-full w-32 h-32">
           <Image
-            className="rounded-full object-cover w-full h-full"
             src={currentUser.profilepic || dummyProfile}
-            alt="Profile"
+            alt="Profile Image"
+            width={128}   // w-32 = 128px
+            height={128}  // h-32 = 128px
+            priority
+            placeholder="blur"
+            blurDataURL={blurImage}
+            className="rounded-full object-cover"
           />
         </div>
+
       </div>
 
       {/* User Info */}
       <div className="info flex flex-col items-center my-24 mb-32 gap-2">
         <div className="font-bold text-lg">@{username}</div>
         <div className="text-slate-400">Let's help {username} get a chai!</div>
-        <div className="text-slate-400">
-          {payments.length} Payments · ₹{totalRaised} raised
-        </div>
+        <div className="text-slate-400">{payments.length} Payments · ₹{totalRaised} raised</div>
 
         {/* Payment Section */}
         <div className="payment flex flex-col md:flex-row gap-3 w-[80%] mt-11">
@@ -127,10 +114,8 @@ const PaymentPage = ({ username }) => {
               {payments.length === 0 && <li>No payments yet</li>}
               {payments.map((p, i) => (
                 <li key={i} className="flex items-center gap-2">
-                  <Image width={33} src="avatar.gif" alt="user avatar" />
-                  <span>
-                    {p.name} donated <strong>₹{p.amount}</strong> with a message "{p.message}"
-                  </span>
+                  <Image width={33} height={33} src="/avatar.gif" alt="user avatar" />
+                  <span>{p.name} donated <strong>₹{p.amount}</strong> with a message &quot;{p.message}&quot;</span>
                 </li>
               ))}
             </ul>
@@ -139,41 +124,14 @@ const PaymentPage = ({ username }) => {
           {/* Make Payment */}
           <div className="makePayment w-full md:w-1/2 bg-slate-900 rounded-lg text-white p-10 flex flex-col gap-3">
             <h2 className="text-2xl font-bold mb-5">Make a Payment</h2>
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter Name"
-              value={paymentForm.name}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg bg-slate-800"
-            />
-            <input
-              type="text"
-              name="message"
-              placeholder="Enter Message"
-              value={paymentForm.message}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg bg-slate-800"
-            />
-            <input
-              type="number"
-              name="amount"
-              placeholder="Enter Amount"
-              value={paymentForm.amount}
-              onChange={handleChange}
-              className="w-full p-3 rounded-lg bg-slate-800"
-            />
-
+            <input type="text" name="name" placeholder="Enter Name" value={paymentForm.name} onChange={handleChange} className="w-full p-3 rounded-lg bg-slate-800" />
+            <input type="text" name="message" placeholder="Enter Message" value={paymentForm.message} onChange={handleChange} className="w-full p-3 rounded-lg bg-slate-800" />
+            <input type="number" name="amount" placeholder="Enter Amount" value={paymentForm.amount} onChange={handleChange} className="w-full p-3 rounded-lg bg-slate-800" />
             <button
               type="button"
-              disabled={
-                paymentForm.name.length < 3 ||
-                paymentForm.message.length < 4 ||
-                !paymentForm.amount
-              }
+              disabled={paymentForm.name.length < 3 || paymentForm.message.length < 4 || !paymentForm.amount}
               onClick={() => pay(Number(paymentForm.amount) * 100)}
-              className="text-white bg-gradient-to-br from-purple-900 to-blue-900 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 disabled:bg-slate-600"
+              className="text-white bg-gradient-to-br from-purple-900 to-blue-900 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 disabled:bg-slate-600"
             >
               Pay
             </button>
@@ -181,11 +139,7 @@ const PaymentPage = ({ username }) => {
             {/* Quick Amount Buttons */}
             <div className="flex flex-col md:flex-row gap-2 mt-5">
               {[1000, 2000, 3000].map((amt) => (
-                <button
-                  key={amt}
-                  className="bg-slate-800 p-3 rounded-lg"
-                  onClick={() => pay(amt)}
-                >
+                <button key={amt} className="bg-slate-800 p-3 rounded-lg" onClick={() => pay(amt)}>
                   Pay ₹{amt / 100}
                 </button>
               ))}
