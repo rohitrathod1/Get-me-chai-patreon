@@ -20,22 +20,12 @@ export default function Home() {
         </p>
         <div className="flex gap-2">
           <Link href={"/login"}>
-            <button
-              type="button"
-              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl 
-                         focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 
-                         font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            >
+            <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5">
               Start Here
             </button>
           </Link>
           <Link href="/about">
-            <button
-              type="button"
-              className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl 
-                         focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 
-                         font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-            >
+            <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5">
               Read More
             </button>
           </Link>
@@ -50,40 +40,19 @@ export default function Home() {
         </h2>
         <div className="flex gap-5 justify-around flex-wrap">
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <Image
-              className="bg-slate-400 rounded-full p-2 text-black"
-              width={88}
-              src="/man.gif"
-              alt="fan helping"
-            />
+            <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/man.gif" alt="fan helping" />
             <p className="font-bold text-center">Fans want to help</p>
-            <p className="text-center">
-              Your fans are available to support you
-            </p>
+            <p className="text-center">Your fans are available to support you</p>
           </div>
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <Image
-              className="bg-slate-400 rounded-full p-2 text-black"
-              width={88}
-              src="/coin.gif"
-              alt="fan contributing"
-            />
+            <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/coin.gif" alt="fan contributing" />
             <p className="font-bold text-center">Fans want to contribute</p>
-            <p className="text-center">
-              Your fans are willing to contribute financially
-            </p>
+            <p className="text-center">Your fans are willing to contribute financially</p>
           </div>
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <Image
-              className="bg-slate-400 rounded-full p-2 text-black"
-              width={88}
-              src="/group.gif"
-              alt="fan collaborating"
-            />
+            <Image className="bg-slate-400 rounded-full p-2 text-black" width={88} height={88} src="/group.gif" alt="fan collaborating" />
             <p className="font-bold text-center">Fans want to collaborate</p>
-            <p className="text-center">
-              Your fans are ready to collaborate with you
-            </p>
+            <p className="text-center">Your fans are ready to collaborate with you</p>
           </div>
         </div>
       </div>

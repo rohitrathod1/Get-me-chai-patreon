@@ -15,7 +15,7 @@ const PaymentPage = ({ username }) => {
   const router = useRouter();
 
   const dummyProfile = "/dummy profile.jpg"; // Default profile
-  const dummyCover = "/cover.jpeg"; // Default cover
+  const dummyCover = "/cover.jpeg";          // Default cover
   const blurImage = "/blur-placeholder.jpeg"; // Blur placeholder
 
   useEffect(() => {
@@ -84,25 +84,23 @@ const PaymentPage = ({ username }) => {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute -bottom-20 right-[46%] border-2 border-white overflow-hidden rounded-full w-32 h-32">
+        <div className="absolute-bottom-20 right-[46%] border-2 border-white overflow-hidden rounded-full w-32 h-32 ">
           <Image
             src={currentUser.profilepic || dummyProfile}
             alt="Profile Image"
-            width={128} // w-32 = 128px
-            height={128} // h-32 = 128px
+            width={128}
+            height={128}
             priority
             placeholder="blur"
             blurDataURL={blurImage}
             className="rounded-full object-cover"
           />
         </div>
-
       </div>
 
       {/* User Info */}
       <div className="info flex flex-col items-center my-24 mb-32 gap-2">
         <div className="font-bold text-lg">@{username}</div>
-        {/* Fixed line 116: Replaced ' with &apos; */}
         <div className="text-slate-400">Let&apos;s help {username} get a chai!</div>
         <div className="text-slate-400">{payments.length} Payments · ₹{totalRaised} raised</div>
 
@@ -116,11 +114,9 @@ const PaymentPage = ({ username }) => {
               {payments.map((p, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <Image width={33} height={33} src="/avatar.gif" alt="user avatar" />
-                  {/* Fixed lines 132: Replaced " with &quot; */}
                   <span>
                     {p.name} donated <strong>₹{p.amount}</strong> with a message &quot;{p.message}&quot;
                   </span>
-
                 </li>
               ))}
             </ul>
@@ -141,7 +137,6 @@ const PaymentPage = ({ username }) => {
               Pay
             </button>
 
-            {/* Quick Amount Buttons */}
             <div className="flex flex-col md:flex-row gap-2 mt-5">
               {[1000, 2000, 3000].map((amt) => (
                 <button key={amt} className="bg-slate-800 p-3 rounded-lg" onClick={() => pay(amt)}>
