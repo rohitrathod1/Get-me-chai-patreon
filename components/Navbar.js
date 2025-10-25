@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -12,7 +13,7 @@ const Navbar = () => {
       
       {/* Logo */}
       <Link href="/" className="logo font-bold text-lg flex items-center gap-2">
-        <img src="tea.gif" width={44} alt="logo" className="invertImg" />
+        <Image src="tea.gif" width={44} alt="logo" className="invertImg" />
         <span className="text-xl md:text-base">Get Me a Chai!</span>
       </Link>
 

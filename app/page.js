@@ -50,7 +50,7 @@ export default function Home() {
         </h2>
         <div className="flex gap-5 justify-around flex-wrap">
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img
+            <Image
               className="bg-slate-400 rounded-full p-2 text-black"
               width={88}
               src="/man.gif"
@@ -62,7 +62,7 @@ export default function Home() {
             </p>
           </div>
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img
+            <Image
               className="bg-slate-400 rounded-full p-2 text-black"
               width={88}
               src="/coin.gif"
@@ -74,7 +74,7 @@ export default function Home() {
             </p>
           </div>
           <div className="item space-y-3 flex flex-col items-center justify-center">
-            <img
+            <Image
               className="bg-slate-400 rounded-full p-2 text-black"
               width={88}
               src="/group.gif"
