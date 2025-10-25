@@ -15,7 +15,7 @@ const PaymentPage = ({ username }) => {
   const router = useRouter();
 
   const dummyProfile = "/dummy profile.jpg"; // Default profile
-  const dummyCover = "/cover.jpeg";          // Default cover
+  const dummyCover = "/cover.jpeg"; // Default cover
   const blurImage = "/blur-placeholder.jpeg"; // Blur placeholder
 
   useEffect(() => {
@@ -88,8 +88,8 @@ const PaymentPage = ({ username }) => {
           <Image
             src={currentUser.profilepic || dummyProfile}
             alt="Profile Image"
-            width={128}   // w-32 = 128px
-            height={128}  // h-32 = 128px
+            width={128} // w-32 = 128px
+            height={128} // h-32 = 128px
             priority
             placeholder="blur"
             blurDataURL={blurImage}
@@ -102,7 +102,8 @@ const PaymentPage = ({ username }) => {
       {/* User Info */}
       <div className="info flex flex-col items-center my-24 mb-32 gap-2">
         <div className="font-bold text-lg">@{username}</div>
-        <div className="text-slate-400">Let's help {username} get a chai!</div>
+        {/* Fixed line 116: Replaced ' with &apos; */}
+        <div className="text-slate-400">Let&apos;s help {username} get a chai!</div>
         <div className="text-slate-400">{payments.length} Payments · ₹{totalRaised} raised</div>
 
         {/* Payment Section */}
@@ -115,6 +116,7 @@ const PaymentPage = ({ username }) => {
               {payments.map((p, i) => (
                 <li key={i} className="flex items-center gap-2">
                   <Image width={33} height={33} src="/avatar.gif" alt="user avatar" />
+                  {/* Fixed lines 132: Replaced " with &quot; */}
                   <span>{p.name} donated <strong>₹{p.amount}</strong> with a message &quot;{p.message}&quot;</span>
                 </li>
               ))}
